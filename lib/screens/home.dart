@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:testa/models/transaction.dart';
 import 'package:testa/screens/add_screen.dart';
+import 'package:testa/chart/barchart.dart';
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -14,14 +16,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transaction = [];
   void _addTransaction(String title, double amount, DateTime date) {
     setState(() {
-      _transaction.add(Transaction(title: title, amount: amount, date: date));
+      _transaction.add(Transaction(id: DateTime.now().toString(), title: title, amount: amount, date: date));
     });
   }
 
 
-  void _deleteTransaction(int index) {
+  void _deleteTransaction(String id) {
     setState(() {
-      _transaction.removeAt(index);
+      _transaction.removeWhere((transaction) => transaction.id == id);
       });
 
   }
@@ -62,14 +64,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.all(10),
-              child: const Card(
-                color: Colors.yellow,
-                elevation: 5,
-                child: Text("Mes Charts"),
-              ),
-            ),
+            const WeeklyBarChart(),
+            
             Expanded(
                 child: ListView.builder(
                     itemCount: _transaction.length,
@@ -105,7 +101,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           trailing: IconButton(
                             color: Colors.red,
                             icon: const Icon(Icons.delete),
-                            onPressed: () => _deleteTransaction(index),
+                            onPressed: () {
+                              _deleteTransaction(t.id);
+                            },
                           ),
                           ),
                       );

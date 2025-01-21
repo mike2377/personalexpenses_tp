@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 
-class WeeklyBarChart extends StatelessWidget {
+class BarChart extends StatelessWidget {
   
 
-  const WeeklyBarChart({Key? key});
+  const BarChart({super.key});
 
   List<Map<String, Object>> get groupe {
     return List.generate(7, (index) {

@@ -11,17 +11,22 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
 
+    //variable por controler le title, amount, date
+
     final _title = TextEditingController();
     final _amount = TextEditingController();
     DateTime? _selectedDate;
 
     void _valider() {
-
+        
+        //verifier en envoyer les donner du formulaire
         final title = _title.text;
         final amount = double.tryParse(_amount.text);
         if (title.isEmpty || amount == null || _selectedDate == null) {
             return;
         }
+
+        //rei,itialise le formlaire et le fermer 
         widget.addTransaction(title, amount, _selectedDate!);
         _title.clear();
         _amount.clear();
@@ -34,9 +39,12 @@ class _AddScreenState extends State<AddScreen> {
         showDatePicker(
             context: context,
             initialDate: _selectedDate,
+            //date a partir de 2023
             firstDate: DateTime(2023),
+            //date actuel
             lastDate: DateTime.now(),
         ).then((value) {
+          //recuper la date selectionner
             if (value!= null) {
                 _selectedDate = value;
             }
@@ -46,16 +54,19 @@ class _AddScreenState extends State<AddScreen> {
 
     @override
     Widget build(BuildContext context) {
-    return Card(
+      //formulaire pour ajout de transactions
+      return Card(
         elevation: 5,
         child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+
+                //textfield pour title et amont
                 TextField(
                     controller: _title,
-                    decoration: InputDecoration(labelText: 'Title'),
+                    decoration: const InputDecoration(labelText: 'Title'),
                 ),
                 TextField(
                     controller: _amount,
@@ -64,12 +75,18 @@ class _AddScreenState extends State<AddScreen> {
 
                 ),
                 const Spacer(),
+
+                //ligne pour le choix de la date
                 Row(
                     children: [
                     const Text('Date Chosen '),
                     Expanded(
+
+                      //permet de selectinner la date par la fonction datePicker
                         child: GestureDetector(
                             onTap: datePicker,
+
+                            //style du bouton permettant de selectionner la date
                             child: Text(
                                 _selectedDate?.toString()?? 'Chose Date',
                                 style: const TextStyle(
@@ -84,6 +101,8 @@ class _AddScreenState extends State<AddScreen> {
                     ],
                 ),
                 const SizedBox(height: 16.0),
+                
+                //bouton pour ajouter les transactions
                 ElevatedButton(
                     onPressed: _valider,
                     style: ElevatedButton.styleFrom(
@@ -102,6 +121,6 @@ class _AddScreenState extends State<AddScreen> {
             ),
         ),
 
-    );
+      );
     }
 }
